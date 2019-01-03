@@ -146,6 +146,11 @@ abstract class TaskContext extends Serializable {
   }
 
   /**
+   * Make the task aware of its own TaskId
+   */
+  var taskId: Long = -1
+  
+  /**
    * The ID of the stage that this task belong to.
    */
   def stageId(): Int

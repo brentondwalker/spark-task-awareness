@@ -65,6 +65,16 @@ private[spark] abstract class Task[T](
   @transient lazy val metrics: TaskMetrics =
     SparkEnv.get.closureSerializer.newInstance().deserialize(ByteBuffer.wrap(serializedTaskMetrics))
 
+  // Let the task be aware of its own TaskId, once assigned
+  private var taskId:Option[Long] = None
+  
+  /**
+   * Make TaskId available to the task itself, once it has been assigned.
+   */
+  def setTaskId(id:Long) {
+    taskId = Some(id)
+  }
+  
   /**
    * Called by [[org.apache.spark.executor.Executor]] to run this task.
    *
@@ -87,6 +97,8 @@ private[spark] abstract class Task[T](
       localProperties,
       metricsSystem,
       metrics)
+    // set the taskID
+    context.taskId = taskId.getOrElse(-1)
     TaskContext.setTaskContext(context)
     taskThread = Thread.currentThread()
 
@@ -216,4 +228,5 @@ private[spark] abstract class Task[T](
       taskThread.interrupt()
     }
   }
+  
 }

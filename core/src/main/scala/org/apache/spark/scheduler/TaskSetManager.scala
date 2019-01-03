@@ -465,6 +465,7 @@ private[spark] class TaskSetManager(
         // Found a task; do some bookkeeping and return a task description
         val task = tasks(index)
         val taskId = sched.newTaskId()
+        task.setTaskId(taskId)
         // Do various bookkeeping
         copiesRunning(index) += 1
         val attemptNum = taskAttempts(index).size
