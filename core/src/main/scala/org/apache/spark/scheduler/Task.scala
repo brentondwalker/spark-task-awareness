@@ -98,7 +98,7 @@ private[spark] abstract class Task[T](
       metricsSystem,
       metrics)
     // set the taskID
-    context.taskId = taskId.getOrElse(-1)
+    context.setTaskId( taskId.getOrElse(-1) )
     TaskContext.setTaskContext(context)
     taskThread = Thread.currentThread()
 

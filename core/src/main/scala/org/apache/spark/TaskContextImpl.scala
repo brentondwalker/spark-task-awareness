@@ -54,7 +54,9 @@ private[spark] class TaskContextImpl(
   extends TaskContext
   with Logging {
   
-  //override var taskId: Long = -1
+  private var taskIdInternal:Long = -1
+  override def taskId(): Long = { taskIdInternal }
+  override def setTaskId(id:Long) { taskIdInternal = id }
 
   /** List of callback functions to execute when the task completes. */
   @transient private val onCompleteCallbacks = new ArrayBuffer[TaskCompletionListener]
